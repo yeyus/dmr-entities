@@ -1,7 +1,8 @@
 package dmrmarc
 
 import (
-	"json"
+	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -29,7 +30,7 @@ func FetchUsers() []Users {
 
 	var u UsersResponse
 
-	err = json.Unmarshal(resp.Body, &u)
+	err = json.NewDecoder(resp.Body).Decode(u)
 	if err != nil {
 		log.Printf("ERROR: Failure parsing DMR-MARC users, %v", err)
 	}

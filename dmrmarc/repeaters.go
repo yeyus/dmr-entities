@@ -1,7 +1,8 @@
 package dmrmarc
 
 import (
-	"json"
+	"encoding/json"
+	"log"
 	"net/http"
 )
 
@@ -25,11 +26,10 @@ type Repeater struct {
 	Assigned    string `json:"peer"`
 	IPSCNetwork string `json:"ipsc_network"`
 	Offset      string `json:"offset"`
-	City        string `json:"city"`
 	Remarks     string `json:"remarks"`
 }
 
-func FetchUsers() []Users {
+func FetchRepeaters() []Repeater {
 	resp, err := http.Get("http://www.dmr-marc.net/cgi-bin/trbo-database/datadump.cgi?table=repeaters&format=json&header=0")
 	if err != nil {
 		log.Printf("ERROR: Failure fetching DMR-MARC repeaters, %v", err)
@@ -38,7 +38,7 @@ func FetchUsers() []Users {
 
 	var r RepeatersResponse
 
-	err = json.Unmarshal(resp.Body, &r)
+	err = json.NewDecoder(resp.Body).Decode(&r)
 	if err != nil {
 		log.Printf("ERROR: Failure parsing DMR-MARC repeaters, %v", err)
 	}

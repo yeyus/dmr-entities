@@ -2,21 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/yeyus/dmr-entitites/dmrmarc"
-	"log"
-	"net/http"
+	"github.com/yeyus/dmr-entities/brandmeister"
+	//	"github.com/yeyus/dmr-entities/dmrmarc"
+	//	"log"
 )
 
 type Entity struct {
-	Id       uint32
-	System   SystemTypeEnum
-	Type     EntityTypeEnum
-	Callsign string
-	Name     string
-	Surname  string
-	Country  string
-	State    string
-	City     string
+	Id         uint32
+	System     SystemTypeEnum
+	Type       EntityTypeEnum
+	Callsign   string
+	Name       string
+	Surname    string
+	Country    string
+	CountryISO string
+	State      string
+	City       string
 }
 
 type EntityTypeEnum string
@@ -33,13 +34,5 @@ const (
 )
 
 func main() {
-
-}
-
-func GetBrandmeisterGroups() {
-	resp, err := http.Get("https://api.brandmeister.network/v1.0/groups/")
-	if err != nil {
-		log.Printf("ERROR: Failure fetching Brandmeister groups")
-	}
-	defer resp.Body.Close()
+	fmt.Printf("Groups: %v", brandmeister.GetBrandmeisterGroups())
 }
