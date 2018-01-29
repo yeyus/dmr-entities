@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/pariz/gountries"
 	"strconv"
 	"strings"
 )
@@ -170,4 +171,19 @@ func GetCountryCodeForID(id int) string {
 	}
 
 	return idToCountryCode[longestPrefixId]
+}
+
+func GetCountryNameForID(id int) string {
+	iso := GetCountryCodeForID(id)
+	if iso == "" {
+		return "Unknown"
+	}
+
+	query := gountries.New()
+	country, err := query.FindCountryByAlpha(iso)
+	if err != nil {
+		return "Unknown"
+	}
+
+	return country.Name.Common
 }

@@ -1,0 +1,13 @@
+* DMR Entities
+
+Use this software to create a database of DMR entities: users, talk groups, repeaters, etc.
+
+** Devel
+
+Run devel postgres container as instructer in https://hub.docker.com/_/postgres/:
+
+: docker run -p 5432:5432 --name devel-postgres -e POSTGRES_PASSWORD=p0stgr35ql -d postgres
+
+Run psql:
+
+: docker run -it --rm --link devel-postgres:postgres postgres psql -h postgres -U postgres
