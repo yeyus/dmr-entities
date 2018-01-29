@@ -3,10 +3,11 @@ package main
 import (
 	"github.com/yeyus/dmr-entities/brandmeister"
 	"github.com/yeyus/dmr-entities/db"
+	"github.com/yeyus/dmr-entities/dmrmarc"
 	"github.com/yeyus/dmr-entities/model"
 	"github.com/yeyus/dmr-entities/utils"
-	//	"github.com/yeyus/dmr-entities/dmrmarc"
 	"log"
+	"strconv"
 )
 
 const POSTGRES_PASSWORD string = "p0stgr35ql"
@@ -31,6 +32,23 @@ func main() {
 			Name:       v,
 			Country:    utils.GetCountryNameForID(k),
 			CountryISO: utils.GetCountryCodeForID(k),
+		})
+	}
+
+	users := dmrmarc.FetchUsers()
+	for _, u := range users {
+		id, _ := strconv.Atoi(u.RadioId)
+		database.InsertEntity(&model.Entity{
+			Id:         uint32(id),
+			System:     model.SystemTypeDMR,
+			Type:       model.EntityHam,
+			Callsign:   u.Callsign,
+			Name:       u.Name,
+			Surname:    u.Surname,
+			Country:    u.Country,
+			CountryISO: utils.GetCountryCodeForID(id),
+			City:       u.City,
+			State:      u.State,
 		})
 	}
 	log.Print("\nEnd!\n")

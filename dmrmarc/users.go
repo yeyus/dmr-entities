@@ -12,7 +12,7 @@ type UsersResponse struct {
 
 type Users struct {
 	Country  string `json:"country"`
-	Callsign string `json:"callsing"`
+	Callsign string `json:"callsign"`
 	Name     string `json:"name"`
 	RadioId  string `json:"radio_id"`
 	Surname  string `json:"surname"`
@@ -30,7 +30,7 @@ func FetchUsers() []Users {
 
 	var u UsersResponse
 
-	err = json.NewDecoder(resp.Body).Decode(u)
+	err = json.NewDecoder(resp.Body).Decode(&u)
 	if err != nil {
 		log.Printf("ERROR: Failure parsing DMR-MARC users, %v", err)
 	}
