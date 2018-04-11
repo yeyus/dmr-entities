@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/kelseyhightower/envconfig"
 	"github.com/yeyus/dmr-entities/brandmeister"
 	"github.com/yeyus/dmr-entities/db"
 	"github.com/yeyus/dmr-entities/dmrmarc"
@@ -10,14 +11,22 @@ import (
 	"strconv"
 )
 
-const POSTGRES_PASSWORD string = "p0stgr35ql"
-const POSTGRES_HOST string = "localhost:5432"
-const POSTGRES_USERNAME string = "postgres"
-const POSTGRES_DATABASE string = "postgres"
+type Configuration struct {
+	DatabaseHost     string `envconfig:"DB_HOST"`
+	DatabaseUser     string `envconfig:"DB_USER"`
+	DatabasePassword string `envconfig:"DB_PASSWORD"`
+	DatabaseName     string `envconfig:"DB_NAME"`
+}
 
 func main() {
-	database := db.GetDBManager(POSTGRES_HOST, POSTGRES_USERNAME, POSTGRES_PASSWORD, POSTGRES_DATABASE)
-	err := database.DropSchema()
+	var c Configuration
+	err := envconfig.Process("entities", &c)
+	if err != nil {
+		log.Fatal(err.Error)
+	}
+
+	database := db.GetDBManager(c.DatabaseHost, c.DatabaseUser, c.DatabasePassword, c.DatabaseName)
+	err = database.DropSchema()
 	err = database.CreateSchema()
 	if err != nil {
 		log.Panicf("Error creating schema: %v", err)

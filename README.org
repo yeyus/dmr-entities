@@ -7,6 +7,7 @@ Use this software to create a database of DMR entities: users, talk groups, repe
 Run devel postgres container as instructer in https://hub.docker.com/_/postgres/:
 
 : docker run -p 5432:5432 --name devel-postgres -e POSTGRES_PASSWORD=p0stgr35ql -d postgres
+: DB_HOST=localhost:5432 DB_USER=postgres DB_NAME=postgres DB_PASSWORD=p0stgr35ql make run
 
 Run psql:
 
