@@ -22,7 +22,7 @@ type Users struct {
 }
 
 func FetchUsers() []Users {
-	resp, err := http.Get("http://www.dmr-marc.net/cgi-bin/trbo-database/datadump.cgi?table=users&format=json&header=0")
+	resp, err := http.Get("https://ham-digital.org/status/users.json")
 	if err != nil {
 		log.Printf("ERROR: Failure fetching DMR-MARC users, %v", err)
 	}
