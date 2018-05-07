@@ -32,7 +32,7 @@ type Repeater struct {
 func FetchRepeaters() []Repeater {
 	resp, err := http.Get("http://www.dmr-marc.net/cgi-bin/trbo-database/datadump.cgi?table=repeaters&format=json&header=0")
 	if err != nil {
-		log.Printf("ERROR: Failure fetching DMR-MARC repeaters, %v", err)
+		log.Panicf("ERROR: Failure fetching DMR-MARC repeaters, %v", err)
 	}
 	defer resp.Body.Close()
 
@@ -40,7 +40,7 @@ func FetchRepeaters() []Repeater {
 
 	err = json.NewDecoder(resp.Body).Decode(&r)
 	if err != nil {
-		log.Printf("ERROR: Failure parsing DMR-MARC repeaters, %v", err)
+		log.Panicf("ERROR: Failure parsing DMR-MARC repeaters, %v", err)
 	}
 
 	return r.Repeaters

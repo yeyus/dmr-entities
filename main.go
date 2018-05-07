@@ -16,6 +16,7 @@ type Configuration struct {
 	DatabaseUser     string `envconfig:"DB_USER"`
 	DatabasePassword string `envconfig:"DB_PASSWORD"`
 	DatabaseName     string `envconfig:"DB_NAME"`
+	Debug            bool   `envconfig:"DEBUG"`
 }
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 		log.Fatal(err.Error)
 	}
 
-	database := db.GetDBManager(c.DatabaseHost, c.DatabaseUser, c.DatabasePassword, c.DatabaseName)
+	database := db.GetDBManager(c.DatabaseHost, c.DatabaseUser, c.DatabasePassword, c.DatabaseName, c.Debug)
 	err = database.DropSchema()
 	err = database.CreateSchema()
 	if err != nil {
@@ -60,5 +61,5 @@ func main() {
 			State:      u.State,
 		})
 	}
-	log.Print("\nEnd!\n")
+	log.Print("End!")
 }

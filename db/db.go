@@ -16,7 +16,7 @@ type DBManager struct {
 	handler  *pg.DB
 }
 
-func GetDBManager(host string, user string, password string, database string) *DBManager {
+func GetDBManager(host string, user string, password string, database string, debug bool) *DBManager {
 	db := pg.Connect(&pg.Options{
 		User:     user,
 		Password: password,
@@ -24,14 +24,16 @@ func GetDBManager(host string, user string, password string, database string) *D
 		Addr:     host,
 	})
 
-	db.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {
-		query, err := event.FormattedQuery()
-		if err != nil {
-			panic(err)
-		}
+	if debug {
+		db.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {
+			query, err := event.FormattedQuery()
+			if err != nil {
+				panic(err)
+			}
 
-		log.Printf("%s %s", time.Since(event.StartTime), query)
-	})
+			log.Printf("%s %s", time.Since(event.StartTime), query)
+		})
+	}
 
 	return &DBManager{
 		host:     host,

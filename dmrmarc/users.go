@@ -24,7 +24,7 @@ type Users struct {
 func FetchUsers() []Users {
 	resp, err := http.Get("https://ham-digital.org/status/users.json")
 	if err != nil {
-		log.Printf("ERROR: Failure fetching DMR-MARC users, %v", err)
+		log.Panicf("ERROR: Failure fetching DMR-MARC users, %v", err)
 	}
 	defer resp.Body.Close()
 
@@ -32,7 +32,7 @@ func FetchUsers() []Users {
 
 	err = json.NewDecoder(resp.Body).Decode(&u)
 	if err != nil {
-		log.Printf("ERROR: Failure parsing DMR-MARC users, %v", err)
+		log.Panicf("ERROR: Failure parsing DMR-MARC users, %v", err)
 	}
 
 	return u.Users
