@@ -9,12 +9,16 @@ service Entities {
 
 message EntitiesQuery {
         string query = 1;
-        uint32 page_size = 2;
-        uint32 page_start = 3;
+        string country_iso = 2;
+        EntityType type = 3;
+        SystemType system = 4;
+        uint32 page_size = 5;
+        uint32 page_start = 6;
 }
 
 message EntitiesResponse {
         repeated Entity entities = 1;
+        Meta meta = 2;
 }
 
 message Meta {
