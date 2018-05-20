@@ -37,11 +37,11 @@ func main() {
 	for k, v := range groups {
 		database.InsertEntity(&model.Entity{
 			Id:         uint32(k),
-			System:     model.SystemTypeDMR,
-			Type:       model.EntityTalkgroup,
+			System:     model.SystemType_DMR,
+			Type:       model.EntityType_TALKGROUP,
 			Name:       v,
 			Country:    utils.GetCountryNameForID(k),
-			CountryISO: utils.GetCountryCodeForID(k),
+			CountryIso: utils.GetCountryCodeForID(k),
 		})
 	}
 
@@ -50,13 +50,13 @@ func main() {
 		id, _ := strconv.Atoi(u.RadioId)
 		database.InsertEntity(&model.Entity{
 			Id:         uint32(id),
-			System:     model.SystemTypeDMR,
-			Type:       model.EntityHam,
+			System:     model.SystemType_DMR,
+			Type:       model.EntityType_HAM,
 			Callsign:   u.Callsign,
 			Name:       u.Name,
 			Surname:    u.Surname,
 			Country:    u.Country,
-			CountryISO: utils.GetCountryCodeForID(id),
+			CountryIso: utils.GetCountryCodeForID(id),
 			City:       u.City,
 			State:      u.State,
 		})

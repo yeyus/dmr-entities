@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package model;
+
+
+service Entities {
+        rpc GetEntity(EntitiesQuery) returns (EntitiesResponse) {}
+}
+
+message EntitiesQuery {
+        string query = 1;
+        uint32 page_size = 2;
+        uint32 page_start = 3;
+}
+
+message EntitiesResponse {
+        repeated Entity entities = 1;
+}
+
+message Meta {
+        uint32 total = 1;
+        uint32 page_start = 2;
+        uint32 page_size = 3;
+}
+
+enum SystemType {
+     UNKNOWN_SYSTEM_TYPE = 0;
+     DMR = 1;
+}
+
+enum EntityType {
+     UNKNOWN_ENTITY_TYPE = 0;
+     HAM = 1;
+     TALKGROUP = 2;
+}
+
+message Entity {
+        uint32 id = 1;
+        SystemType system = 2;
+        EntityType type = 3;
+        string callsign = 4;
+        string name = 5;
+        string surname = 6;
+        string country = 7;
+        string country_iso = 8;
+        string state = 9;
+        string city = 10;
+}
