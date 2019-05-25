@@ -1,11 +1,12 @@
 package db
 
 import (
-	"github.com/go-pg/pg"
-	"github.com/go-pg/pg/orm"
-	"github.com/yeyus/dmr-entities/model"
 	"log"
 	"time"
+
+	"github.com/go-pg/pg"
+	"github.com/go-pg/pg/orm"
+	"github.com/yeyus/dmr-entities/pkg/api"
 )
 
 type DBManager struct {
@@ -45,7 +46,7 @@ func GetDBManager(host string, user string, password string, database string, de
 }
 
 func (db DBManager) CreateSchema() error {
-	for _, model := range []interface{}{&model.Entity{}} {
+	for _, model := range []interface{}{&api.Entity{}} {
 		log.Printf("[DB] Creating table for model %T", model)
 		err := db.handler.CreateTable(model, nil)
 		if err != nil {
@@ -57,7 +58,7 @@ func (db DBManager) CreateSchema() error {
 }
 
 func (db DBManager) DropSchema() error {
-	for _, model := range []interface{}{&model.Entity{}} {
+	for _, model := range []interface{}{&api.Entity{}} {
 		log.Printf("[DB] Creating table for model %T", model)
 		err := db.handler.DropTable(model, &orm.DropTableOptions{
 			IfExists: true,
@@ -70,6 +71,6 @@ func (db DBManager) DropSchema() error {
 	return nil
 }
 
-func (db DBManager) InsertEntity(entity *model.Entity) error {
+func (db DBManager) InsertEntity(entity *api.Entity) error {
 	return db.handler.Insert(entity)
 }

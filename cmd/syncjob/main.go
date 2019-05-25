@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/kelseyhightower/envconfig"
-	"github.com/yeyus/dmr-entities/brandmeister"
-	"github.com/yeyus/dmr-entities/db"
-	"github.com/yeyus/dmr-entities/dmrmarc"
-	"github.com/yeyus/dmr-entities/model"
-	"github.com/yeyus/dmr-entities/utils"
 	"log"
 	"strconv"
+
+	"github.com/kelseyhightower/envconfig"
+	"github.com/yeyus/dmr-entities/internal/pkg/db"
+	"github.com/yeyus/dmr-entities/internal/pkg/utils"
+	"github.com/yeyus/dmr-entities/pkg/api"
+	"github.com/yeyus/dmr-entities/pkg/providers/brandmeister"
+	"github.com/yeyus/dmr-entities/pkg/providers/dmrmarc"
 )
 
 type Configuration struct {
@@ -35,10 +36,10 @@ func main() {
 
 	groups := brandmeister.GetBrandmeisterGroups()
 	for k, v := range groups {
-		database.InsertEntity(&model.Entity{
+		database.InsertEntity(&api.Entity{
 			Id:         uint32(k),
-			System:     model.SystemType_DMR,
-			Type:       model.EntityType_TALKGROUP,
+			System:     api.SystemType_DMR,
+			Type:       api.EntityType_TALKGROUP,
 			Name:       v,
 			Country:    utils.GetCountryNameForID(k),
 			CountryIso: utils.GetCountryCodeForID(k),
@@ -48,10 +49,10 @@ func main() {
 	users := dmrmarc.FetchUsers()
 	for _, u := range users {
 		id, _ := strconv.Atoi(u.RadioId)
-		database.InsertEntity(&model.Entity{
+		database.InsertEntity(&api.Entity{
 			Id:         uint32(id),
-			System:     model.SystemType_DMR,
-			Type:       model.EntityType_HAM,
+			System:     api.SystemType_DMR,
+			Type:       api.EntityType_HAM,
 			Callsign:   u.Callsign,
 			Name:       u.Name,
 			Surname:    u.Surname,

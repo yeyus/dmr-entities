@@ -11,7 +11,7 @@ help: ## This help.
 all: clean proto build ## clean and build for local environment
 
 proto: ## recreate proto bindings for go
-	protoc -I model/ model/entities.proto --go_out=plugins=grpc:model
+	protoc -I api/protobuf api/protobuf/entities.proto --go_out=plugins=grpc:pkg/api
 
 build: ## build the go binary for the current environment
 	@mkdir -p ./bin
@@ -29,7 +29,7 @@ publish: container ## publish to docker hub
 
 clean: ## clean all files created by this makefile
 	@rm -rf ./bin
-	@rm model/entities.pb.go
+	@rm pkg/api/entities.pb.go
 
 run: ## run locally
 	go run main.go
