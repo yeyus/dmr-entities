@@ -59,7 +59,7 @@ func (db DBManager) CreateSchema() error {
 
 func (db DBManager) DropSchema() error {
 	for _, model := range []interface{}{&api.Entity{}} {
-		log.Printf("[DB] Creating table for model %T", model)
+		log.Printf("[DB] Dropping table for model %T", model)
 		err := db.handler.DropTable(model, &orm.DropTableOptions{
 			IfExists: true,
 		})

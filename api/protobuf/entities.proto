@@ -12,24 +12,34 @@ message EntitiesQuery {
         string country_iso = 2;
         EntityType type = 3;
         SystemType system = 4;
+        Namespace namespace = 7;
         uint32 page_size = 5;
         uint32 page_start = 6;
 }
 
 message EntitiesResponse {
         repeated Entity entities = 1;
-        Meta meta = 2;
+        Pagination pagination = 2;
 }
 
-message Meta {
+message Pagination {
         uint32 total = 1;
         uint32 page_start = 2;
         uint32 page_size = 3;
 }
 
+enum Namespace {
+    UNKNOWN_NAMESPACE = 0;
+    RADIOID = 1;
+    DMRMARC = 2;
+    BRANDMEISTER = 3;
+    TGIF = 4;
+}
+
 enum SystemType {
      UNKNOWN_SYSTEM_TYPE = 0;
      DMR = 1;
+     NXDN = 2;
 }
 
 enum EntityType {
@@ -39,14 +49,16 @@ enum EntityType {
 }
 
 message Entity {
-        uint32 id = 1;
-        SystemType system = 2;
-        EntityType type = 3;
-        string callsign = 4;
-        string name = 5;
-        string surname = 6;
-        string country = 7;
-        string country_iso = 8;
-        string state = 9;
-        string city = 10;
+        uint64 id = 1;
+        uint64 system_id = 2;
+        SystemType system = 3;
+        EntityType type = 4;
+        Namespace namespace = 5;
+        string callsign = 6;
+        string name = 7;
+        string surname = 8;
+        string country = 9;
+        string country_iso = 10;
+        string state = 11;
+        string city = 12;
 }

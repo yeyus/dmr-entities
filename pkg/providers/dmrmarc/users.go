@@ -2,6 +2,8 @@ package dmrmarc
 
 import (
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
@@ -21,19 +23,27 @@ type Users struct {
 	Remarks  string `json:"remarks"`
 }
 
-func FetchUsers() []Users {
+func FetchUsers() ([]Users, error) {
 	resp, err := http.Get("https://ham-digital.org/status/users.json")
 	if err != nil {
-		log.Panicf("ERROR: Failure fetching DMR-MARC users, %v", err)
+		log.Printf("[dmr-marc][FetchUsers] ERROR: Failure fetching DMR-MARC users, %v", err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 
-	var u UsersResponse
-
-	err = json.NewDecoder(resp.Body).Decode(&u)
-	if err != nil {
-		log.Panicf("ERROR: Failure parsing DMR-MARC users, %v", err)
+	log.Printf("[dmr-marc][FetchUsers] downloaded DMR-MARC users with size %d bytes", resp.ContentLength)
+	if resp.StatusCode != 200 {
+		b, _ := ioutil.ReadAll(resp.Body)
+		log.Printf("[dmr-marc][FetchUsers] user list download failed with status = %d, body => %s", resp.StatusCode, string(b))
+		return nil, fmt.Errorf("user list download failed with status = %d, body => %s", resp.StatusCode, string(b))
 	}
 
-	return u.Users
+	var u UsersResponse
+	err = json.NewDecoder(resp.Body).Decode(&u)
+	if err != nil {
+		log.Printf("[dmr-marc][FetchUsers] ERROR: Failure parsing DMR-MARC users, %v", err)
+		return nil, err
+	}
+
+	return u.Users, nil
 }
