@@ -1,7 +1,22 @@
-FROM golang:1.8
+FROM golang:1.12-alpine as builder
 
-WORKDIR /app
+RUN apk update && \
+    apk upgrade && \
+    apk add protobuf && \
+    apk add git && \
+    apk add make
 
-COPY bin/dmr-entities-linux-amd64 dmr-entities
+RUN go get google.golang.org/grpc && \
+    go get github.com/golang/protobuf/protoc-gen-go
 
-CMD ["./dmr-entities"]
+COPY . /app
+
+RUN cd /app && \
+    go get && \
+    make all
+    
+# ---
+FROM alpine:latest as syncjob
+
+COPY  --from=builder /app/bin/syncjob /app/syncjob
+CMD ["./app/syncjob"]

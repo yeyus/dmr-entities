@@ -4,10 +4,11 @@ package api;
 
 
 service Entities {
-        rpc GetEntity(EntitiesQuery) returns (EntitiesResponse) {}
+        rpc SearchEntity(SearchEntitiesRequest) returns (EntitiesResponse) {}
+        rpc GetEntity(GetEntityRequest) returns (Entity) {}
 }
 
-message EntitiesQuery {
+message SearchEntitiesRequest {
         string query = 1;
         string country_iso = 2;
         EntityType type = 3;
@@ -15,6 +16,10 @@ message EntitiesQuery {
         Namespace namespace = 7;
         uint32 page_size = 5;
         uint32 page_start = 6;
+}
+
+message GetEntityRequest {
+        uint64 id = 1;
 }
 
 message EntitiesResponse {

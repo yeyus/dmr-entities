@@ -2,7 +2,6 @@ package db
 
 import (
 	"log"
-	"time"
 
 	"github.com/go-pg/pg"
 	"github.com/go-pg/pg/orm"
@@ -24,17 +23,6 @@ func GetDBManager(host string, user string, password string, database string, de
 		Database: database,
 		Addr:     host,
 	})
-
-	if debug {
-		db.OnQueryProcessed(func(event *pg.QueryProcessedEvent) {
-			query, err := event.FormattedQuery()
-			if err != nil {
-				panic(err)
-			}
-
-			log.Printf("%s %s", time.Since(event.StartTime), query)
-		})
-	}
 
 	return &DBManager{
 		host:     host,

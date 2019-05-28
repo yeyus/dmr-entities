@@ -1,3 +1,4 @@
+GO_PACKAGE_BASE = github.com/yeyus/dmr-entities
 PACKAGE = dmr-entities
 ENTRYPOINT = main.go
 
@@ -15,13 +16,13 @@ proto: ## recreate proto bindings for go
 
 build: ## build the go binary for the current environment
 	@mkdir -p ./bin
-	go build -i -o ./bin/$(PACKAGE)
+	CGO_ENABLED=0 go build -o ./bin/syncjob $(GO_PACKAGE_BASE)/cmd/syncjob
 
 build-linux-amd64: ## build the go binary for linux-amd64 systems
 	@mkdir -p ./bin
-	GOOS=linux GOARCH=amd64 go build -i -o ./bin/$(PACKAGE)-linux-amd64
+	env GOOD=linux GOARCH=amd64 go build -i -o ./bin/syncjob-linux-adm64 -v $(GO_PACKAGE_BASE)/cmd/syncjob
 
-container: build-linux-amd64 ## build the container for linux-amd64
+container:
 	docker build -t yeyus/dmr-entities .
 
 publish: container ## publish to docker hub
@@ -31,5 +32,5 @@ clean: ## clean all files created by this makefile
 	@rm -rf ./bin
 	@rm pkg/api/entities.pb.go
 
-run: ## run locally
-	go run main.go
+run-syncjob: ## run locally
+	go run $(GO_PACKAGE_BASE)/cmd/syncjob
