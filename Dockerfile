@@ -14,9 +14,9 @@ COPY . /app
 RUN cd /app && \
     go get && \
     make all
-    
+
 # ---
-FROM alpine:latest as syncjob
+FROM scratch as syncjob
 
 COPY  --from=builder /app/bin/syncjob /app/syncjob
 CMD ["./app/syncjob"]
