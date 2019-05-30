@@ -23,10 +23,10 @@ build-linux-amd64: ## build the go binary for linux-amd64 systems
 	env GOOD=linux GOARCH=amd64 go build -i -o ./bin/syncjob-linux-adm64 -v $(GO_PACKAGE_BASE)/cmd/syncjob
 
 container:
-	docker build -t yeyus/dmr-entities .
+	docker build --target syncjob -t yeyus/dmr-entities-syncjob:latest .
 
 publish: container ## publish to docker hub
-	docker push yeyus/dmr-entities:latest
+	docker push yeyus/dmr-entities-syncjob:latest
 
 clean: ## clean all files created by this makefile
 	@rm -rf ./bin
