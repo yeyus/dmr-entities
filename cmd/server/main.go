@@ -6,7 +6,7 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/grpc-ecosystem/go-grpc-prometheus"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -31,7 +31,9 @@ func main() {
 		log.Fatal(err.Error)
 	}
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 3000))
+	grpcHost := fmt.Sprintf(":%d", 3000)
+	log.Printf("Launching grpc server at %s", grpcHost)
+	lis, err := net.Listen("tcp", grpcHost)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -55,7 +57,9 @@ func main() {
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{}))
 
 	go func() {
-		if err := http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", 8080), nil); err != nil {
+		serverHost := fmt.Sprintf("0.0.0.0:%d", 8080)
+		log.Printf("Launching http metrics server at %s", serverHost)
+		if err := http.ListenAndServe(serverHost, nil); err != nil {
 			log.Fatalf("Unable to start a http server: %s", err)
 		}
 	}()

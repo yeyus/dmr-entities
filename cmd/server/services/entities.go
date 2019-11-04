@@ -18,7 +18,7 @@ func (s *EntitiesServer) GetEntity(context context.Context, request *api.GetEnti
 	requestID := "unknown"
 	entity, err := s.DB.GetEntity(request.GetId())
 	if err != nil {
-		log.Printf("[GetEntity] {%} error while fetching from db: %s",requestID ,err.Error())
+		log.Printf("[GetEntity] {%} error while fetching from db: %s", requestID, err.Error())
 	}
 
 	return entity, err
