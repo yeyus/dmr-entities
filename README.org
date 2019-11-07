@@ -12,3 +12,8 @@ Run devel postgres container as instructer in https://hub.docker.com/_/postgres/
 Run psql:
 
 : docker run -it --rm --link devel-postgres:postgres postgres psql -h postgres -U postgres
+
+*** Launching server
+
+: cd cmd/server
+: DB_HOST=localhost:5432 DB_USER=postgres DB_NAME=postgres DB_PASSWORD=p0stgr35ql go run main.go

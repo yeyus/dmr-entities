@@ -34,3 +34,6 @@ clean: ## clean all files created by this makefile
 
 run-syncjob: ## run locally
 	go run $(GO_PACKAGE_BASE)/cmd/syncjob
+
+run-server: ## run locally
+	go run $(GO_PACKAGE_BASE)/cmd/server	
