@@ -6,6 +6,8 @@ package api;
 service Entities {
         rpc SearchEntity(SearchEntitiesRequest) returns (EntitiesResponse) {}
         rpc GetEntity(GetEntityRequest) returns (Entity) {}
+        rpc GetEntitiesBySystemID(GetEntitiesBySystemIDRequest) returns (EntitiesResponse) {}
+        rpc GetEntitiesByCallsign(GetEntitiesByCallsignRequest) returns (EntitiesResponse) {}
 }
 
 message SearchEntitiesRequest {
@@ -20,6 +22,14 @@ message SearchEntitiesRequest {
 
 message GetEntityRequest {
         uint64 id = 1;
+}
+
+message GetEntitiesBySystemIDRequest {
+        repeated uint64 system_id = 1;
+}
+
+message GetEntitiesByCallsignRequest {
+    repeated string callsign = 1;
 }
 
 message EntitiesResponse {

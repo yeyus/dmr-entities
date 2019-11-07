@@ -62,3 +62,12 @@ func (db DBManager) DropSchema() error {
 func (db DBManager) InsertEntity(entity *api.Entity) error {
 	return db.handler.Insert(entity)
 }
+
+func (db *DBManager) GetEntity(id uint64) (*api.Entity, error) {
+	entity := &api.Entity{
+		Id: id,
+	}
+	err := db.handler.Select(entity)
+
+	return entity, err
+}
