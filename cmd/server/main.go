@@ -13,6 +13,8 @@ import (
 	"github.com/yeyus/dmr-entities/cmd/server/services"
 	"github.com/yeyus/dmr-entities/internal/pkg/db"
 	"github.com/yeyus/dmr-entities/pkg/api"
+	multiint "github.com/yeyus/go-grpc-interceptor/multiinterceptor"
+	"github.com/yeyus/go-grpc-interceptor/xrequestid"
 	"google.golang.org/grpc"
 )
 
@@ -48,8 +50,8 @@ func main() {
 	grpcMetrics := grpc_prometheus.NewServerMetrics()
 
 	grpcServer := grpc.NewServer(
-		grpc.StreamInterceptor(grpc_prometheus.StreamServerInterceptor),
-		grpc.UnaryInterceptor(grpc_prometheus.UnaryServerInterceptor),
+		grpc.StreamInterceptor(multiint.NewMultiStreamServerInterceptor(grpc_prometheus.StreamServerInterceptor, xrequestid.StreamServerInterceptor())),
+		grpc.UnaryInterceptor(multiint.NewMultiUnaryServerInterceptor(grpc_prometheus.UnaryServerInterceptor, xrequestid.UnaryServerInterceptor())),
 	)
 	api.RegisterEntitiesServer(grpcServer, &s)
 	grpcMetrics.InitializeMetrics(grpcServer)
