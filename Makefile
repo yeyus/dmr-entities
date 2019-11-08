@@ -9,24 +9,34 @@ help: ## This help.
 
 .DEFAULT_GOAL := help
 
-all: clean proto build ## clean and build for local environment
+all: clean proto build-sync build-server ## clean and build for local environment
 
 proto: ## recreate proto bindings for go
 	protoc -I api/protobuf api/protobuf/entities.proto --go_out=plugins=grpc:pkg/api
 
-build: ## build the go binary for the current environment
+build-sync: ## build the sync go binary for the current environment
 	@mkdir -p ./bin
 	CGO_ENABLED=0 go build -o ./bin/syncjob $(GO_PACKAGE_BASE)/cmd/syncjob
 
-build-linux-amd64: ## build the go binary for linux-amd64 systems
+build-sync-linux-amd64: ## build the go binary for linux-amd64 systems
 	@mkdir -p ./bin
 	env GOOD=linux GOARCH=amd64 go build -i -o ./bin/syncjob-linux-adm64 -v $(GO_PACKAGE_BASE)/cmd/syncjob
 
-container:
-	docker build --target syncjob -t yeyus/dmr-entities-syncjob:latest .
+build-server: ## build the server go binary for the current environment
+	@mkdir -p ./bin
+	CGO_ENABLED=0 go build -o ./bin/server $(GO_PACKAGE_BASE)/cmd/server
 
-publish: container ## publish to docker hub
-	docker push yeyus/dmr-entities-syncjob:latest
+build-server-linux-amd64: ## build the go binary for linux-amd64 systems
+	@mkdir -p ./bin
+	env GOOD=linux GOARCH=amd64 go build -i -o ./bin/server-linux-adm64 -v $(GO_PACKAGE_BASE)/cmd/server
+
+containers:
+	docker build --target syncjob -t yeyus/$(PACKAGE)-syncjob:latest .
+	docker build --target server -t yeyus/$(PACKAGE)-server:latest .
+
+publish: containers ## publish to docker hub
+	docker push yeyus/$(PACKAGE)-syncjob:latest
+	docker push yeyus/$(PACKAGE)-server:latest
 
 clean: ## clean all files created by this makefile
 	@rm -rf ./bin
