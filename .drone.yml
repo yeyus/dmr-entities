@@ -10,7 +10,7 @@ steps:
     image: plugins/docker
     when:
       event:
-        - pull_request
+        include: ["pull_request"]
     settings:
       target: syncjob
       repo: yeyus/dmr-entities-syncjob
@@ -23,7 +23,7 @@ steps:
     image: plugins/docker
     when:
       event:
-        - pull_request
+        include: ["pull_request"]
    settings:
       target: server
       repo: yeyus/dmr-entities-syncjob
@@ -35,8 +35,7 @@ steps:
   - name: push-syncjob
     image: plugins/docker
     when:
-      branch:
-        - master
+      branch: ["master"]
     settings:
       target: syncjob
       repo: yeyus/dmr-entities-syncjob
@@ -47,8 +46,7 @@ steps:
   - name: push-server
     image: plugins/docker
     when:
-      branch:
-        - master
+      branch: ["master"]
     settings:
       target: server
       repo: yeyus/dmr-entities-server
