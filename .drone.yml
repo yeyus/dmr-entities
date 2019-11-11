@@ -5,16 +5,13 @@ platform:
   os: linux
   arch: amd64
 
-#services:
-#  docker:
-#    image: docker:19.09.7-dind
-#    environment:
-#    privileged: true
-#    command: [ --storage-driver=overlay2]
-
 steps:
   - name: build
     image: plugins/docker
     settings:
       target: syncjob
       repo: yeyus/dmr-entities-syncjob
+      username:
+	from_secret: docker_username
+      password:
+        from_secret: docker_password
