@@ -6,11 +6,20 @@ platform:
   arch: amd64
 
 steps:
-  - name: build
+  - name: syncjob
     image: plugins/docker
     settings:
       target: syncjob
       repo: yeyus/dmr-entities-syncjob
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: server
+    image: plugins/docker
+    settings:
+      target: server
+      repo: yeyus/dmr-entities-server
       username:
         from_secret: docker_username
       password:
