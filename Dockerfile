@@ -20,3 +20,9 @@ FROM scratch as syncjob
 
 COPY  --from=builder /app/bin/syncjob /app/syncjob
 CMD ["./app/syncjob"]
+
+# ---
+FROM scratch as server
+
+COPY  --from=builder /app/bin/server /app/server
+CMD ["./app/server"]

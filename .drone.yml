@@ -1,0 +1,56 @@
+kind: pipeline
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: pr-syncjob
+    image: plugins/docker
+    when:
+      event: ["pull_request"]
+    settings:
+      target: syncjob
+      repo: yeyus/dmr-entities-syncjob
+      dry_run: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: pr-server
+    image: plugins/docker
+    when:
+      event: ["pull_request"]
+    settings:
+      target: server
+      repo: yeyus/dmr-entities-syncjob
+      dry_run: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: push-syncjob
+    image: plugins/docker
+    when:
+      branch: ["master"]
+      event: ["push"]
+    settings:
+      target: syncjob
+      repo: yeyus/dmr-entities-syncjob
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: push-server
+    image: plugins/docker
+    when:
+      branch: ["master"]
+      event: ["push"]
+    settings:
+      target: server
+      repo: yeyus/dmr-entities-server
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password

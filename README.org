@@ -1,6 +1,11 @@
 * DMR Entities
 
 Use this software to create a database of DMR entities: users, talk groups, repeaters, etc.
+** Build Status
+
+#+CAPTION: Build status
+#+NAME: fig:build-status
+[[https://drone.ea7jmf.com/api/badges/yeyus/dmr-entities/status.svg]]
 
 ** Devel
 
