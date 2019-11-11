@@ -6,8 +6,37 @@ platform:
   arch: amd64
 
 steps:
-  - name: syncjob
+  - name: pr-syncjob
     image: plugins/docker
+    when:
+      event:
+        - pull_request
+    settings:
+      target: syncjob
+      repo: yeyus/dmr-entities-syncjob
+      dry_run: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: pr-server
+    image: plugins/docker
+    when:
+      event:
+        - pull_request
+   settings:
+      target: server
+      repo: yeyus/dmr-entities-syncjob
+      dry_run: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+  - name: push-syncjob
+    image: plugins/docker
+    when:
+      branch:
+        - master
     settings:
       target: syncjob
       repo: yeyus/dmr-entities-syncjob
@@ -15,8 +44,11 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-  - name: server
+  - name: push-server
     image: plugins/docker
+    when:
+      branch:
+        - master
     settings:
       target: server
       repo: yeyus/dmr-entities-server
