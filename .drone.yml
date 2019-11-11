@@ -24,7 +24,7 @@ steps:
     when:
       event:
         include: ["pull_request"]
-   settings:
+    settings:
       target: server
       repo: yeyus/dmr-entities-syncjob
       dry_run: true
