@@ -5,14 +5,16 @@ platform:
   os: linux
   arch: amd64
 
+#services:
+#  docker:
+#    image: docker:19.09.7-dind
+#    environment:
+#    privileged: true
+#    command: [ --storage-driver=overlay2]
+
 steps:
   - name: build
-    image: docker:18.09.7-dind
-    volumes:
-      - name: docker_run
-        path: /var/run/
-      - name: docker_lib
-        path:  /var/lib/docker
-    commands:
-      - docker build --no-cache --target syncjob -t yeyus/dmr-entities-syncjob:latest .
-      - docker build --no-cache --target server -t yeyus/dmr-entities-server:latest .
+    image: plugins/docker
+    settings:
+      target: syncjob
+      repo: yeyus/dmr-entities-syncjob
