@@ -12,6 +12,6 @@ steps:
       target: syncjob
       repo: yeyus/dmr-entities-syncjob
       username:
-	from_secret: docker_username
+        from_secret: docker_username
       password:
         from_secret: docker_password
